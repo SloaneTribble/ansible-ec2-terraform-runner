@@ -20,20 +20,21 @@ provider "aws" {
 
 }
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "3.18.1"
+# module "vpc" {
+#   source  = "terraform-aws-modules/vpc/aws"
+#   version = "3.18.1"
 
-  name = var.vpc_name
-  cidr = var.vpc_cidr
+#   name = var.vpc_name
+#   cidr = var.vpc_cidr
 
-  azs            = var.vpc_azs
-  public_subnets = var.vpc_public_subnets
+#   azs            = var.vpc_azs
+#   public_subnets = var.vpc_public_subnets
 
-  enable_nat_gateway = var.vpc_enable_nat_gateway
+#   enable_nat_gateway = var.vpc_enable_nat_gateway
 
-  tags = var.vpc_tags
-}
+#   tags = var.vpc_tags
+# }
+
 
 module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
@@ -47,8 +48,8 @@ module "ec2_instance" {
   key_name                    = "stribble-tf-ec2-runner"
   associate_public_ip_address = true
 
-  vpc_security_group_ids = [module.vpc.default_security_group_id]
-  subnet_id              = module.vpc.public_subnets[0]
+  vpc_security_group_ids = ["sg-06198c96f581e0a30"]
+  subnet_id              = "subnet-019c03f7b62349192"
 
   tags = {
     Terraform            = "true"
