@@ -1,0 +1,15 @@
+name: Hello Ansible
+
+on: [push]
+
+jobs:
+    build:
+      # ensure that the self-hosted runner uses Linux
+        runs-on: [self-hosted, Linux]
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+
+            - name: Echo runner name
+              run: "echo 'Hello from runner: ${{ runner.name }}!'"
