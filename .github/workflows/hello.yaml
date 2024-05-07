@@ -1,16 +1,19 @@
 name: Hello Ansible
 
-on: 
+on:
   workflow_dispatch:
 
 jobs:
-    build:
-      # ensure that the self-hosted runner uses Linux
-        runs-on: [self-hosted, Linux]
+  build:
+    runs-on: ${{ matrix.runner_label }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runner_label: [Homer, Marge]  # List of runner labels
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
-            - name: Echo runner name
-              run: "echo 'Hello from runner: ${{ runner.name }}!'"
+      - name: Echo runner label
+        run: echo "Hello from runner labeled ${{ matrix.runner_label }}!"
