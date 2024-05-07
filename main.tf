@@ -20,27 +20,13 @@ provider "aws" {
 
 }
 
-# module "vpc" {
-#   source  = "terraform-aws-modules/vpc/aws"
-#   version = "3.18.1"
-
-#   name = var.vpc_name
-#   cidr = var.vpc_cidr
-
-#   azs            = var.vpc_azs
-#   public_subnets = var.vpc_public_subnets
-
-#   enable_nat_gateway = var.vpc_enable_nat_gateway
-
-#   tags = var.vpc_tags
-# }
 
 
 module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "4.3.0"
 
-  count = 1
+  count = 2
   name  = "stribble-ansible-ec2-cluster-${count.index}"
 
   ami                         = "ami-04e5276ebb8451442" # linux x86 image
@@ -72,6 +58,7 @@ resource "local_file" "ansible_inventory" {
 
 resource "null_resource" "ansible_provisioner" {
   triggers = {
+    # this will always be different so our ansible provisioner will always run when running terraform apply
     always_run = "${timestamp()}"
   }
 
